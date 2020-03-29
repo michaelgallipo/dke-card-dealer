@@ -2,10 +2,14 @@
   <div class="deal">
     <h1>May the Odds be Ever in Your Favor</h1>
     <div id="cards">
-      <div v-for="card in hands[0]" style="display: inline-block">
-        <span>
-          <img id="playingCard" :src="getImgUrl(card)" alt="card" />
-        </span>
+      <div v-for="(player, index) in hands" :key="index">
+        <div v-if="index < players">
+          <div v-for="(card, index) in player" :key="index" style="display: inline-block">
+            <span>
+              <img id="playingCard" :src="getImgUrl(card)" alt="card" />
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     <button v-on:click="deal">Deal Cards</button>
@@ -17,7 +21,7 @@ export default {
   data: () => {
     return {
       hands: [],
-      hand1: [],
+      players: 2,
       card: "",
       default_url: "../assets/logo.png",
       test: "logo"
@@ -32,18 +36,28 @@ export default {
         "dkelion.jpg",
         "dkelion.jpg"
       ],
-      [],
-      [],
-      []
+      [
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg"
+      ],
+      [
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg"
+      ],
+      [
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg"
+      ]
     ];
-    this.hand1 = [
-      "dkelion.jpg",
-      "dkelion.jpg",
-      "dkelion.jpg",
-      "dkelion.jpg",
-      "dkelion.jpg"
-    ];
-    console.log("created worked", this.hands);
   },
   methods: {
     deal: function() {
@@ -61,6 +75,32 @@ export default {
         "QC",
         "KC",
         "AC",
+        "2S",
+        "3S",
+        "4S",
+        "5S",
+        "6S",
+        "7S",
+        "8S",
+        "9S",
+        "10S",
+        "JS",
+        "QS",
+        "KS",
+        "AS",
+        "2D",
+        "3D",
+        "4D",
+        "5D",
+        "6D",
+        "7D",
+        "8D",
+        "9D",
+        "10D",
+        "JD",
+        "QD",
+        "KD",
+        "AD",
         "2H",
         "3H",
         "4H",
@@ -77,11 +117,12 @@ export default {
       ];
       let size = 5;
       for (let x = 0; x < size; x++) {
-        let dealt = Math.floor(Math.random() * deck.length);
-        let card_url = deck[dealt] + ".png";
-        this.hands[0].splice(x, 1, card_url);
-        deck.splice(dealt, 1);
-        // console.log(this.hands[0]);
+        for (let y = 0; y < this.players; y++) {
+          let dealt = Math.floor(Math.random() * deck.length);
+          let card_url = deck[dealt] + ".png";
+          this.hands[y].splice(x, 1, card_url);
+          deck.splice(dealt, 1);
+        }
       }
     },
     getImgUrl(card) {
