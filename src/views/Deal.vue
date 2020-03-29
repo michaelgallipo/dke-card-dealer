@@ -1,6 +1,17 @@
 <template>
   <div class="deal">
     <h1>May the Odds be Ever in Your Favor</h1>
+    <div id="selectors">
+      <label>Players</label>
+      <input type="radio" id="players" value="1" v-model="players" />
+      <label for="one">One</label>
+      <input type="radio" id="players" value="2" v-model="players" />
+      <label for="two">Two</label>
+      <input type="radio" id="players" value="3" v-model="players" />
+      <label for="three">Three</label>
+      <input type="radio" id="players" value="4" v-model="players" />
+      <label for="four">Four</label>
+    </div>
     <div id="cards">
       <div v-for="(player, index) in hands" :key="index">
         <div v-if="index < players">
@@ -21,7 +32,7 @@ export default {
   data: () => {
     return {
       hands: [],
-      players: 2,
+      players: 1,
       card: "",
       default_url: "../assets/logo.png",
       test: "logo"
@@ -36,27 +47,9 @@ export default {
         "dkelion.jpg",
         "dkelion.jpg"
       ],
-      [
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg"
-      ],
-      [
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg"
-      ],
-      [
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg",
-        "dkelion.jpg"
-      ]
+      [],
+      [],
+      []
     ];
   },
   methods: {
@@ -116,11 +109,13 @@ export default {
         "AH"
       ];
       let size = 5;
+      this.hands = [[], [], [], []];
       for (let x = 0; x < size; x++) {
         for (let y = 0; y < this.players; y++) {
           let dealt = Math.floor(Math.random() * deck.length);
           let card_url = deck[dealt] + ".png";
-          this.hands[y].splice(x, 1, card_url);
+          // this.hands[y].splice(x, 1, card_url);
+          this.hands[y].push(card_url);
           deck.splice(dealt, 1);
         }
       }
@@ -133,9 +128,19 @@ export default {
 </script>
 
 <style scoped>
+#selectors {
+  display: inline-block;
+  padding-bottom: 30px;
+}
+
+#players {
+  margin-left: 25px;
+}
+
 #cards {
   margin-bottom: 30px;
 }
+
 #playingCard {
   height: 150px;
 }
