@@ -2,22 +2,39 @@
   <div class="deal">
     <h1>May the Odds be Ever in Your Favor</h1>
     <div id="selectors">
-      <label>Players</label>
-      <input type="radio" id="players" value="1" v-model="players" />
-      <label for="one">One</label>
-      <input type="radio" id="players" value="2" v-model="players" />
-      <label for="two">Two</label>
-      <input type="radio" id="players" value="3" v-model="players" />
-      <label for="three">Three</label>
-      <input type="radio" id="players" value="4" v-model="players" />
-      <label for="four">Four</label>
+      <div id="row">
+        <label>Players</label>
+        <input type="radio" id="players" value="1" v-model="players" />
+        <label for="one">One</label>
+        <input type="radio" id="players" value="2" v-model="players" />
+        <label for="two">Two</label>
+        <input type="radio" id="players" value="3" v-model="players" />
+        <label for="three">Three</label>
+        <input type="radio" id="players" value="4" v-model="players" />
+        <label for="four">Four</label>
+      </div>
+      <br />
+      <div id="row">
+        <label>Cards</label>
+        <input type="radio" id="numCards" value="5" v-model="size" />
+        <label for="one">Five</label>
+        <input type="radio" id="numCards" value="6" v-model="size" />
+        <label for="one">Six</label>
+        <input type="radio" id="numCards" value="7" v-model="size" />
+        <label for="two">Seven</label>
+        <input type="radio" id="numCards" value="8" v-model="size" />
+        <label for="two">Eight</label>
+        <input type="radio" id="numCards" value="9" v-model="size" />
+        <label for="two">Nine</label>
+      </div>
     </div>
     <div id="cards">
       <div v-for="(player, index) in hands" :key="index">
         <div v-if="index < players">
           <div v-for="(card, index) in player" :key="index" style="display: inline-block">
             <span>
-              <img id="playingCard" :src="getImgUrl(card)" alt="card" />
+              <img v-if="!dealt" id="playingCard" src="../assets/cards/dkelion.jpg" alt="card" />
+              <img v-if="dealt" id="playingCard" :src="getImgUrl(card)" alt="card" />
             </span>
           </div>
         </div>
@@ -33,6 +50,8 @@ export default {
     return {
       hands: [],
       players: 1,
+      dealt: false,
+      size: 5,
       card: "",
       default_url: "../assets/logo.png",
       test: "logo"
@@ -108,9 +127,10 @@ export default {
         "KH",
         "AH"
       ];
-      let size = 5;
+      // let size = 5;
       this.hands = [[], [], [], []];
-      for (let x = 0; x < size; x++) {
+      this.dealt = true;
+      for (let x = 0; x < this.size; x++) {
         for (let y = 0; y < this.players; y++) {
           let dealt = Math.floor(Math.random() * deck.length);
           let card_url = deck[dealt] + ".png";
@@ -129,11 +149,19 @@ export default {
 
 <style scoped>
 #selectors {
+  padding-bottom: 20px;
+}
+
+#row {
   display: inline-block;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 
 #players {
+  margin-left: 25px;
+}
+
+#numCards {
   margin-left: 25px;
 }
 
