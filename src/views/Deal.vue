@@ -28,16 +28,42 @@
         <label for="two">Nine</label>
       </div>
     </div>
+    <div id="playerButtons">
+      <button
+        class="playerButton"
+        id="player1"
+        v-if="players > 0 && dealt == true"
+        v-on:click="setPlayer(1)"
+      >Player 1</button>
+      <button
+        class="playerButton"
+        id="player2"
+        v-if="players > 1 && dealt == true"
+        v-on:click="setPlayer(2)"
+      >Player 2</button>
+      <button
+        class="playerButton"
+        id="player3"
+        v-if="players > 2 && dealt == true"
+        v-on:click="setPlayer(3)"
+      >Player 3</button>
+      <button
+        class="playerButton"
+        id="player4"
+        v-if="players > 3 && dealt == true"
+        v-on:click="setPlayer(4)"
+      >Player 4</button>
+    </div>
     <div id="cards">
-      <div v-for="(player, index) in hands" :key="index">
-        <div v-if="index < players">
-          <div v-for="(card, index) in player" :key="index" style="display: inline-block">
-            <span>
-              <img v-if="!dealt" id="playingCard" src="../assets/cards/dkelion.jpg" alt="card" />
-              <img v-if="dealt" id="playingCard" :src="getImgUrl(card)" alt="card" />
-            </span>
-          </div>
-        </div>
+      <div
+        v-for="(card, index) in hands[show_player - 1]"
+        :key="index"
+        style="display: inline-block"
+      >
+        <span>
+          <img v-if="!dealt" id="playingCard" src="../assets/cards/dkelion.jpg" alt="card" />
+          <img v-if="dealt" id="playingCard" :src="getImgUrl(card)" alt="card" />
+        </span>
       </div>
     </div>
     <button v-on:click="deal">Deal Cards</button>
@@ -52,6 +78,7 @@ export default {
       players: 1,
       dealt: false,
       size: 5,
+      show_player: 5,
       card: "",
       default_url: "../assets/logo.png",
       test: "logo"
@@ -68,7 +95,14 @@ export default {
       ],
       [],
       [],
-      []
+      [],
+      [
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg",
+        "dkelion.jpg"
+      ]
     ];
   },
   methods: {
@@ -127,8 +161,20 @@ export default {
         "KH",
         "AH"
       ];
-      // let size = 5;
-      this.hands = [[], [], [], []];
+      this.show_player = 5;
+      this.hands = [
+        [],
+        [],
+        [],
+        [],
+        [
+          "dkelion.jpg",
+          "dkelion.jpg",
+          "dkelion.jpg",
+          "dkelion.jpg",
+          "dkelion.jpg"
+        ]
+      ];
       this.dealt = true;
       for (let x = 0; x < this.size; x++) {
         for (let y = 0; y < this.players; y++) {
@@ -142,6 +188,9 @@ export default {
     },
     getImgUrl(card) {
       return require("../assets/cards/" + card);
+    },
+    setPlayer(player) {
+      this.show_player = player;
     }
   }
 };
@@ -171,5 +220,32 @@ export default {
 
 #playingCard {
   height: 150px;
+}
+
+.playerButton {
+  width: 100px;
+  height: 50px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #000;
+  margin: 15px;
+  color: white;
+  font-weight: bolder;
+  font-size: 18px;
+}
+#player1 {
+  background-color: blue;
+}
+
+#player2 {
+  background-color: red;
+}
+
+#player3 {
+  background-color: black;
+}
+
+#player4 {
+  background-color: darkgreen;
 }
 </style>
