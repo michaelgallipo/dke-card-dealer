@@ -66,7 +66,12 @@
         </span>
       </div>
     </div>
-    <button v-on:click="deal">Deal Cards</button>
+    <button
+      id="dealButton"
+      v-on:click="deal"
+      @mouseover="hover = true"
+      @mouseleave="hover = false"
+    >Deal Cards</button>
   </div>
 </template>
 
@@ -81,7 +86,8 @@ export default {
       show_player: 5,
       card: "",
       default_url: "../assets/logo.png",
-      test: "logo"
+      test: "logo",
+      hover: false
     };
   },
   created() {
@@ -220,6 +226,22 @@ export default {
 
 #playingCard {
   height: 150px;
+}
+
+#dealButton {
+  width: 150px;
+  height: 60px;
+  background-color: whitesmoke;
+  color: #000;
+  font-weight: bold;
+  border-style: solid;
+  border-width: 3px;
+  font-size: 20px;
+}
+
+#dealButton:hover {
+  background-color: navy;
+  color: white;
 }
 
 .playerButton {
