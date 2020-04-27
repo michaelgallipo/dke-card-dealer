@@ -60,18 +60,41 @@
         :key="index"
         style="display: inline-block"
       >
-        <span>
+        <span style="display: block">
           <img v-if="!dealt" id="playingCard" src="../assets/cards/dkelion.jpg" alt="card" />
           <img v-if="dealt" id="playingCard" :src="getImgUrl(card)" alt="card" />
+          <input
+            v-if="dealt && show_player !== 5"
+            type="checkbox"
+            value="true"
+            style="display: block; margin-left: 70px"
+            v-model="wantNew[show_player - 1][index]"
+          />
         </span>
       </div>
+      <!-- <div id="discardBox" style="display: block">
+        <div v-for="(discard, index) in wantNew[show_player - 1]" style="display: inline-block">
+          <input v-if="dealt && show_player !== 5" type="checkbox" value="true" />
+        </div>
+      </div>-->
     </div>
+    <!-- <div style="display: inine-block"> -->
     <button
+      class="cardButton"
       id="dealButton"
       v-on:click="deal"
       @mouseover="hover = true"
       @mouseleave="hover = false"
     >Deal Cards</button>
+    <button
+      v-if="dealt && show_player != 5"
+      class="cardButton"
+      id="discardButton"
+      v-on:click="discard"
+      @mouseover="hover = true"
+      @mouseleave="hover = false"
+    >Discard Selected</button>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -80,6 +103,8 @@ export default {
   data: () => {
     return {
       hands: [],
+      wantNew: [[], [], [], []],
+      remainderDeck: [],
       players: 1,
       dealt: false,
       size: 5,
@@ -189,8 +214,24 @@ export default {
           // this.hands[y].splice(x, 1, card_url);
           this.hands[y].push(card_url);
           deck.splice(dealt, 1);
+          this.wantNew[y].push(false);
         }
       }
+      this.remainderDeck = [...deck];
+    },
+    discard() {
+      this.wantNew[this.show_player - 1].forEach((card, index) => {
+        if (card) {
+          let newCard = Math.floor(Math.random() * this.remainderDeck.length);
+          this.hands[this.show_player - 1].splice(
+            index,
+            1,
+            this.remainderDeck[newCard] + ".png"
+          );
+          this.wantNew[this.show_player - 1][index] = false;
+        }
+      });
+      console.log(this.wantNew[this.show_player - 1]);
     },
     getImgUrl(card) {
       return require("../assets/cards/" + card);
@@ -228,8 +269,8 @@ export default {
   height: 150px;
 }
 
-#dealButton {
-  width: 150px;
+.cardButton {
+  width: 200px;
   height: 60px;
   background-color: whitesmoke;
   color: #000;
@@ -238,9 +279,21 @@ export default {
   border-width: 3px;
   font-size: 20px;
 }
+#dealButton {
+  margin-right: 20px;
+}
 
 #dealButton:hover {
   background-color: navy;
+  color: white;
+}
+
+#discardButton {
+  margin-left: 20px;
+}
+
+#discardButton:hover {
+  background-color: red;
   color: white;
 }
 
