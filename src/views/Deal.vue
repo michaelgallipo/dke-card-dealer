@@ -222,16 +222,16 @@ export default {
     discard() {
       this.wantNew[this.show_player - 1].forEach((card, index) => {
         if (card) {
-          let newCard = Math.floor(Math.random() * this.remainderDeck.length);
-          this.hands[this.show_player - 1].splice(
-            index,
-            1,
-            this.remainderDeck[newCard] + ".png"
-          );
+          let newCard =
+            this.remainderDeck.splice(
+              Math.floor(Math.random() * this.remainderDeck.length),
+              1
+            ) + ".png";
+          this.hands[this.show_player - 1].splice(index, 1, newCard);
           this.wantNew[this.show_player - 1][index] = false;
         }
       });
-      console.log(this.wantNew[this.show_player - 1]);
+      console.log(this.remainderDeck.length);
     },
     getImgUrl(card) {
       return require("../assets/cards/" + card);
